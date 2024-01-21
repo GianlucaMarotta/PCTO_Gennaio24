@@ -14,10 +14,10 @@ mpu = MPU6050.MPU6050()     # instantiate a MPU6050 class object
 accel = [0]*3               # define an arry to store accelerometer data
 gyro = [0]*3                # define an arry to store gyroscope data
 
-def get_data(print=True):
+def get_data(log=True):
     raw_accel = np.array(mpu.get_acceleration())      # get accelerometer data
     accel = raw_accel/16384.0
-    if print is True:
+    if log is True:
         print(f"Raw data: a_x: {raw_accel[0]}, a_y: {raw_accel[1]}, a_z: {raw_accel[2]}")
         print(f"Accelerations: a_x: {accel[0]}, a_y: {accel[1]}, a_z: {accel[2]}")
 
@@ -40,4 +40,3 @@ if __name__ == '__main__':     # Program entrance
         loop()
     except KeyboardInterrupt:  # Press ctrl-c to end the program.
         pass
-
