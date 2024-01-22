@@ -44,16 +44,21 @@ plt.show()
 def inverse_function_and_error(y, delta_y, A, delta_A, omega, delta_omega, phi, delta_phi):
     # Calculate x as the inverse function of y
     print(y, A, y/A)
-    x = (np.arccos(y / A) - phi) / omega
-    
+
+    x = (np.arccos(y / A) - phi)/ omega
+    dx_dy = -1/(A*omega*np.sqrt(1 - y**2/A**2))
+    dx_dA = y/(A**2*omega*np.sqrt(1 - y**2/A**2))
+    dx_domega = -(-phi + np.arccos(y/A))/omega**2
+    dx_dphi = -1/omega
+
     # Error propagation formula
-    term1 = (delta_y / y)**2 / (omega**2 * (1 - (y / A)**2))
-    term2 = ((delta_A / A)**2 * (y / A)**2) / (omega**2 * (1 - (y / A)**2))
-    term3 = ((delta_omega / omega)**2 * (np.arccos(y / A) - phi)**2) / (omega**2 * (1 - (y / A)**2))
-    term4 = (delta_phi / phi)**2 / (omega**2 * (1 - (y / A)**2))
+    term1 = (dx_dy*delta_y)**2
+    term2 = (dx_dA*delta_A)**2
+    term3 = (dx_domega*delta_omega)**2
+    term4 = (dx_dphi*delta_phi)**2
     print(x, term1, term2, term3, term4)
     # Calculate the uncertainty in x
-    delta_x = np.sqrt(term1 + term2 + term3 + term4)*x
+    delta_x = np.sqrt(term1 + term2 + term3 + term4)
     
     return x, delta_x
 
