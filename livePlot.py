@@ -4,6 +4,11 @@ import matplotlib.animation as animation
 from numpy import nan
 from getData import get_data
 from meanData import mean_data
+from MPU6050 import MPU6050 
+import numpy as np
+
+mpu = MPU6050.MPU6050()  
+
 
 # Create figure for plotting
 fig, axs = plt.subplots(3)
@@ -45,3 +50,11 @@ def animate(i, ys, data=None):
 def live_plot(data, sleep=10):
     ani = animation.FuncAnimation(fig, animate, fargs=(ys, data), interval=sleep*1000)
     plt.show()
+
+def setup():
+    mpu.dmp_initialize()    # initialize MPU6050
+            
+if __name__ == '__main__':     # Program entrance
+    print("Program is starting ... ")
+    setup()
+    live_plot(data="mean", sleep=0.1)

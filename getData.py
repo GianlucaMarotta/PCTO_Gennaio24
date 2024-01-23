@@ -19,7 +19,7 @@ def get_data(log=True):
     accel = raw_accel/16384.0
     if log is True:
         print(f"Raw data: a_x: {raw_accel[0]}, a_y: {raw_accel[1]}, a_z: {raw_accel[2]}")
-        print(f"Accelerations: a_x: {accel[0]}, a_y: {accel[1]}, a_z: {accel[2]}")
+        print(f"Accelerations: a_x: {accel[0]} g, a_y: {accel[1]} g, a_z: {accel[2]} g")
 
     return accel
 
@@ -29,7 +29,7 @@ def setup():
     
 def loop():
     while(True):
-        accel = get_data()
+        get_data()
         time.sleep(0.5)
 
         
