@@ -1,4 +1,6 @@
 import numpy as np
+import warnings
+warnings.filterwarnings("ignore")
 import pandas as pd
 from scipy.optimize import curve_fit
 import matplotlib.pyplot as plt
@@ -12,8 +14,8 @@ file_path = 'data.csv'  # Replace with the actual file path
 data = pd.read_csv(file_path, sep='\t')
 
 # Extract columns from the DataFrame
-angles_400_deg = data['angle']
-angles_360 = np.radians(angles_400_deg*0.9)
+angles_400_deg = data['angle'] 
+angles_360 = np.radians(angles_400_deg*0.9) #the scale reported on the telescope are angle that varies betwee 0 and 360. We need to report angle in 360 and then convert in radians
 
 a_z = data['a_z (g)']
 err_a_z = data['err_a_z (g)']
@@ -25,11 +27,11 @@ params, covariance = curve_fit(sinusoidal_function, angles_360, a_z, sigma=err_a
 # Get the fitted parameters
 errors = np.sqrt(np.diag(covariance))
 omega_fit, phi_fit, offset_fit = params
-err_omega_fit, err_phi_fit, err_offset= errors
+err_omega_fit, err_phi_fit, err_offset_fit= errors
 max_x = np.max(angles_360)
-x_fit = np.linspace(0,max_x ,100)
-print(params)
-print(errors)
+x_fit = np.linspace(np.radians(-10),max_x ,100)
+print(f"Parameters from the fit: A={a_z[0]}, omega={omega_fit}, phi={phi_fit}, offset={offset_fit})")
+print(f"Errors on parameters: err_A={err_a_z[0]} err_omega={err_omega_fit}, err_phi={err_phi_fit}, err_offset={err_offset_fit}")
 # Generate fitted y values using the fitted parameters
 y_fit = sinusoidal_function(x_fit, omega_fit, phi_fit, offset_fit)
 
@@ -66,5 +68,5 @@ err_angle = [np.nan]*len(a_z)
 for i in range(len(a_z)):
     angle[i], err_angle[i] = inverse_function_and_error(a_z[i], err_a_z[i], a_z[0], err_a_z[0], omega_fit, err_omega_fit, phi_fit, err_phi_fit)
 
-print(np.degrees(angle))
-print(np.degrees(err_angle))
+print(f"Angle from data acquired calculated with parameters from fit: {np.degrees(angle)}")
+print(f"Errors on angles {np.degrees(err_angle)}")

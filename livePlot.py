@@ -48,7 +48,7 @@ def animate(i, ys, data=None):
 
 # Set up plot to call animate() function periodically
 def live_plot(data, sleep=10):
-    ani = animation.FuncAnimation(fig, animate, fargs=(ys, data), interval=sleep*1000)
+    ani = animation.FuncAnimation(fig, animate, fargs=(ys, data), interval=sleep)
     plt.show()
 
 def setup():
@@ -57,4 +57,4 @@ def setup():
 if __name__ == '__main__':     # Program entrance
     print("Program is starting ... ")
     setup()
-    live_plot(data="mean", sleep=0.1)
+    live_plot(data="mean", sleep=10)
